@@ -2,7 +2,6 @@
 const SUPABASE_URL = "https://iicobacgstpbuvedqndo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_I0lDtnUBTnwQs_aei2Hg-A_m_KY19tQ";
 
-// ✅ ON NE REDEFINIT PAS supabase
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -22,34 +21,23 @@ form.addEventListener("submit", async (event) => {
   const password = document.getElementById("password").value;
 
   // 1️⃣ Inscription Auth
-
-const { data, error } = await supabaseClient.auth.signUp({
-  email,
-  password
-});
-
-if (error) {
-  message.textContent = error.message;
-  message.style.color = "red";
-  return; // ✅ STOP
-}
-
-// ✅ Ici seulement si l'utilisateur existe
-const { error: profileError } = await supabaseClient
-  .from("profiles")
-  .insert({
-    id: data.user.id,
-    email
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password
   });
 
+  if (error) {
+    message.textContent = error.message;
+    message.style.color = "red";
+    return; // ✅ STOP si Auth échoue
+  }
 
-
-  // 2️⃣ Insertion dans profiles
+  // 2️⃣ Insertion du profil (UNE SEULE FOIS)
   const { error: profileError } = await supabaseClient
     .from("profiles")
     .insert({
       id: data.user.id,
-      email: email
+      email
     });
 
   if (profileError) {
