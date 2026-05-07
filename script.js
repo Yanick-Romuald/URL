@@ -1,6 +1,6 @@
 // ✅ Supabase est déjà défini par le CDN
-const SUPABASE_URL = "https://TON-PROJET.supabase.co";
-const SUPABASE_KEY = "TA_CLE_ANON_PUBLIQUE";
+const SUPABASE_URL = "https://iicobacgstpbuvedqndo.supabase.co";
+const SUPABASE_KEY = "sb_publishable_I0lDtnUBTnwQs_aei2Hg-A_m_KY19tQ";
 
 // ✅ ON NE REDEFINIT PAS supabase
 const supabaseClient = supabase.createClient(
