@@ -22,19 +22,27 @@ form.addEventListener("submit", async (event) => {
   const password = document.getElementById("password").value;
 
   // 1️⃣ Inscription Auth
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password
+
+const { data, error } = await supabaseClient.auth.signUp({
+  email,
+  password
+});
+
+if (error) {
+  message.textContent = error.message;
+  message.style.color = "red";
+  return; // ✅ STOP
+}
+
+// ✅ Ici seulement si l'utilisateur existe
+const { error: profileError } = await supabaseClient
+  .from("profiles")
+  .insert({
+    id: data.user.id,
+    email
   });
 
-  console.log("DATA:", data);
-  console.log("ERROR:", error);
 
-  if (error) {
-    message.textContent = error.message;
-    message.style.color = "red";
-    return;
-  }
 
   // 2️⃣ Insertion dans profiles
   const { error: profileError } = await supabaseClient
