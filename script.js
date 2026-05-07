@@ -1,6 +1,6 @@
 // 🔐 Connexion à Supabase
-const SUPABASE_URL = "https://TON-PROJET.supabase.co";
-const SUPABASE_KEY = "TA_CLE_ANON_PUBLIQUE";
+const SUPABASE_URL = "https://iicobacgstpbuvedqndo.supabase.co";
+const SUPABASE_KEY = "sb_publishable_I0lDtnUBTnwQs_aei2Hg-A_m_KY19tQ";
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
