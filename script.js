@@ -1,8 +1,14 @@
-// 🔐 Connexion à Supabase
-const SUPABASE_URL = "https://iicobacgstpbuvedqndo.supabase.co";
-const SUPABASE_KEY = "sb_publishable_I0lDtnUBTnwQs_aei2Hg-A_m_KY19tQ";
+// ✅ Supabase est déjà défini par le CDN
+const SUPABASE_URL = "https://TON-PROJET.supabase.co";
+const SUPABASE_KEY = "TA_CLE_ANON_PUBLIQUE";
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// ✅ ON NE REDEFINIT PAS supabase
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+console.log("✅ script.js chargé");
 
 // 🎯 Éléments HTML
 const form = document.getElementById("signup-form");
@@ -10,15 +16,19 @@ const message = document.getElementById("message");
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  console.log("✅ formulaire soumis");
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  // 1️⃣ Création de l'utilisateur dans Supabase Auth
-  const { data, error } = await supabase.auth.signUp({
-    email: email,
-    password: password
+  // 1️⃣ Inscription Auth
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password
   });
+
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
 
   if (error) {
     message.textContent = error.message;
@@ -26,23 +36,23 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
-  // 2️⃣ Récupération de l'UUID généré par Auth
-  const userId = data.user.id;
-
-  // 3️⃣ Insertion du profil lié dans la table profiles
-  const { error: profileError } = await supabase
+  // 2️⃣ Insertion dans profiles
+  const { error: profileError } = await supabaseClient
     .from("profiles")
     .insert({
-      id: userId,
+      id: data.user.id,
       email: email
     });
 
   if (profileError) {
+    console.error(profileError);
     message.textContent =
-      "Compte créé ✅ mais erreur lors de la création du profil";
+      "✅ Compte créé, ❌ profil non créé";
     message.style.color = "orange";
   } else {
-    message.textContent = "Compte et profil créés avec succès ✅";
+    message.textContent =
+      "✅ Compte et profil créés avec succès";
     message.style.color = "green";
   }
 });
+``
